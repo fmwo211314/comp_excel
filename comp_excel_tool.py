@@ -21,7 +21,9 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
 
         self.textEdit.setText("比较开始...")
         try:
-            self.compareExecute(self.excel_expect, self.excel_actual)
+            # self.compareExecute(self.excel_expect, self.excel_actual)
+            self.compareExecuteFromTo(self.excel_expect, self.excel_actual, 10, 13, 3, 27)
+            # self.compareExecuteFromTo(self.excel_expect, self.excel_actual, 5, 10, 5, 10)
             self.textEdit.append("比较完成，详情请查看\n%s" % self.excel_actual)
             self.alert("执行完成")
         except:
@@ -59,15 +61,69 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
             for index_column, cell in enumerate(row):
                 index = index_row * sheet_actual.max_column + index_column
                 if cell.value != list[index]:
-                    comment = Comment('预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value), 'lxy')
-                    comment.width = 400
-                    comment.height = 400
-                    cell.comment = comment
-                    cell.fill = fill
-                    self.textEdit.append(
-                        '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, index_row + 1,
-                                                                  index_column + 1))
+                    try:
+                        comment = Comment('预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value), 'lxy')
+                        comment.width = 400
+                        comment.height = 400
+                        cell.comment = comment
+                        cell.fill = fill
+                        self.textEdit.append(
+                            '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, index_row + 1,
+                                                                      index_column + 1))
+                    except:
+                        pass
 
+        wb_actual.save(excel_actual)
+
+    def compareExecuteFromTo(self, excel_expect, excel_actual, row_from, row_to, column_from, column_to):
+        wb_expect = load_workbook(excel_expect, data_only=False)
+        wb_actual = load_workbook(excel_actual, data_only=False)
+        sheet_expect = wb_expect.active
+        sheet_actual = wb_actual.active
+
+        list = []
+        for row in sheet_expect.iter_rows(min_row=row_from, min_col=column_from, max_col=column_to,
+                                          max_row=row_to):
+            for cell in row:
+                list.append(cell.value)
+
+        fill = PatternFill("solid", fgColor="FF0000")
+
+        for row in sheet_actual.iter_rows(min_row=row_from, min_col=column_from, max_col=column_to,
+                                          max_row=row_to):
+            for cell in row:
+                index = (cell.row - row_from) * (column_to - column_from + 1) + cell.column - column_from
+                result_expect = list[index]
+                result_actual = cell.value
+                if result_actual != result_expect:
+                    if result_expect is not None and result_actual is not None:
+                        if result_expect.startswith("="):
+                            if "$" in result_expect:
+                                result_expect = result_expect.replace("$","")
+                            if result_expect[1:] not in result_actual:
+                                try:
+                                    comment = Comment('预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value), 'lxy')
+                                    comment.width = 400
+                                    comment.height = 400
+                                    cell.comment = comment
+                                    cell.fill = fill
+                                    self.textEdit.append(
+                                        '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, cell.row + 1,
+                                                                                  cell.column + 1))
+                                except:
+                                    pass
+                    else:
+                        try:
+                            comment = Comment('预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value), 'lxy')
+                            comment.width = 400
+                            comment.height = 400
+                            cell.comment = comment
+                            cell.fill = fill
+                            self.textEdit.append(
+                                '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, cell.row + 1,
+                                                                          cell.column + 1))
+                        except:
+                            pass
         wb_actual.save(excel_actual)
 
 
