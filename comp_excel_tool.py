@@ -18,17 +18,27 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         if self.excel_actual == "" or self.excel_expect == "":
             self.alert("请选择要比较的Excel文件")
             return
-
-        self.textEdit.setText("比较开始...")
         try:
-            # self.compareExecute(self.excel_expect, self.excel_actual)
-            self.compareExecuteFromTo(self.excel_expect, self.excel_actual, 10, 13, 3, 27)
-            # self.compareExecuteFromTo(self.excel_expect, self.excel_actual, 5, 10, 5, 10)
-            self.textEdit.append("比较完成，详情请查看\n%s" % self.excel_actual)
+            if self.comboBox.currentText() == "设置范围":
+                row_from = int(self.lineEdit_4.text())
+                row_to = int(self.lineEdit_3.text())
+                column_from = int(self.lineEdit_6.text())
+                column_to = int(self.lineEdit_5.text())
+                list = [row_from, row_to, column_from, column_to]
+                if all(list):
+                    self.compareExecuteFromTo(self.excel_expect, self.excel_actual, row_from, row_to, column_from,
+                                              column_to)
+                else:
+                    self.alert("请设置比较范围")
+                    return
+            else:
+                self.compareExecute(self.excel_expect, self.excel_actual)
+
+            self.textBrowser.append("比较完成，详情请查看\n%s" % self.excel_actual)
             self.alert("执行完成")
         except:
             msg = traceback.format_exc()
-            self.textEdit.setText(msg)
+            self.textBrowser.setText(msg)
 
     def alert(self, str):
         msg_box = QtWidgets.QMessageBox
@@ -43,6 +53,23 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         openfile_name = QFileDialog.getOpenFileName(self, '选择文件', '', 'Excel files(*.xlsx , *.xls)')
         self.lineEdit_2.setText(openfile_name[0])
         self.excel_actual = openfile_name[0]
+
+    def select_method(self, index):
+        if self.comboBox.currentText() == "不设置":
+            self.frame.hide()
+        else:
+            self.frame.show()
+
+    def select_clear(self):
+        self.excel_expect = ""
+        self.excel_actual = ""
+        self.textBrowser.clear()
+        self.lineEdit.clear()
+        self.lineEdit_2.clear()
+        self.lineEdit_3.clear()
+        self.lineEdit_4.clear()
+        self.lineEdit_5.clear()
+        self.lineEdit_6.clear()
 
     def compareExecute(self, excel_expect, excel_actual):
         wb_expect = load_workbook(excel_expect, data_only=False)
@@ -67,7 +94,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
                         comment.height = 400
                         cell.comment = comment
                         cell.fill = fill
-                        self.textEdit.append(
+                        self.textBrowser.append(
                             '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, index_row + 1,
                                                                       index_column + 1))
                     except:
@@ -99,7 +126,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
                     if result_expect is not None and result_actual is not None:
                         if result_expect.startswith("="):
                             if "$" in result_expect:
-                                result_expect = result_expect.replace("$","")
+                                result_expect = result_expect.replace("$", "")
                             if result_expect[1:] not in result_actual:
                                 try:
                                     comment = Comment('预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value), 'lxy')
@@ -107,7 +134,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
                                     comment.height = 400
                                     cell.comment = comment
                                     cell.fill = fill
-                                    self.textEdit.append(
+                                    self.textBrowser.append(
                                         '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, cell.row + 1,
                                                                                   cell.column + 1))
                                 except:
@@ -119,7 +146,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
                             comment.height = 400
                             cell.comment = comment
                             cell.fill = fill
-                            self.textEdit.append(
+                            self.textBrowser.append(
                                 '第{2}行第{3}列，\n预期是：{0},\n实际结果是：{1}'.format(list[index], cell.value, cell.row + 1,
                                                                           cell.column + 1))
                         except:
