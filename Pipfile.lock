@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d96e2bd7ad20194d1bcfba59d24d81f541370c99b73405a75627a453d4383b88"
+            "sha256": "26ee5fa512e24338a643b2b8cbfda92f1b3cc3a26c86d4b64ec5672cd6a9fab7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,12 +16,26 @@
         ]
     },
     "default": {
+        "altgraph": {
+            "hashes": [
+                "sha256:d6814989f242b2b43025cba7161fc1b8fb487a62cd49c49245d6fd01c18ac997",
+                "sha256:ddf5320017147ba7b810198e0b6619bd7b5563aa034da388cea8546b877f9b0c"
+            ],
+            "version": "==0.16.1"
+        },
         "et-xmlfile": {
             "hashes": [
                 "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"
             ],
             "index": "pypi",
             "version": "==1.0.1"
+        },
+        "future": {
+            "hashes": [
+                "sha256:67045236dcfd6816dc439556d009594abf643e5eb48992e36beac09c2ca659b8",
+                "sha256:b7218bc080f013055255274899a55faf62eae600669b5f4e8dff9d2a5349caf0"
+            ],
+            "version": "==0.17.1"
         },
         "jdcal": {
             "hashes": [
@@ -37,6 +51,19 @@
             ],
             "index": "pypi",
             "version": "==2.6.2"
+        },
+        "pefile": {
+            "hashes": [
+                "sha256:a5d6e8305c6b210849b47a6174ddf9c452b2888340b8177874b862ba6c207645"
+            ],
+            "version": "==2019.4.18"
+        },
+        "pyinstaller": {
+            "hashes": [
+                "sha256:ee7504022d1332a3324250faf2135ea56ac71fdb6309cff8cd235de26b1d0a96"
+            ],
+            "index": "pypi",
+            "version": "==3.5"
         },
         "pyqt5": {
             "hashes": [
@@ -85,6 +112,13 @@
             ],
             "index": "pypi",
             "version": "==2019.2"
+        },
+        "pywin32-ctypes": {
+            "hashes": [
+                "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942",
+                "sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98"
+            ],
+            "version": "==0.2.0"
         },
         "six": {
             "hashes": [

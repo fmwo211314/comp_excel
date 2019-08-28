@@ -131,7 +131,7 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
                 result_actual = cell.value
                 if result_actual != result_expect:
                     if result_expect is not None and result_actual is not None:
-                        if result_expect.startswith("="):
+                        if isinstance(result_expect, str) and result_expect.startswith("="):
                             if "$" in result_expect:
                                 result_expect = result_expect.replace("$", "")
                             if result_expect[1:] not in result_actual:
