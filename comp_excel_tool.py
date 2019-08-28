@@ -1,4 +1,4 @@
-import sys, traceback
+import sys, traceback, os
 from form import Ui_Form
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
@@ -20,10 +20,10 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
             return
         try:
             if self.comboBox.currentText() == "设置范围":
-                row_from = int(self.lineEdit_4.text())
-                row_to = int(self.lineEdit_3.text())
-                column_from = int(self.lineEdit_6.text())
-                column_to = int(self.lineEdit_5.text())
+                row_from = int(self.lineEdit_4.text()) if self.lineEdit_4.text() else 0
+                row_to = int(self.lineEdit_3.text()) if self.lineEdit_3.text() else 0
+                column_from = int(self.lineEdit_6.text()) if self.lineEdit_6.text() else 0
+                column_to = int(self.lineEdit_5.text()) if self.lineEdit_5.text() else 0
                 list = [row_from, row_to, column_from, column_to]
                 if all(list):
                     self.compareExecuteFromTo(self.excel_expect, self.excel_actual, row_from, row_to, column_from,
@@ -70,6 +70,13 @@ class MyPyQT_Form(QtWidgets.QWidget, Ui_Form):
         self.lineEdit_4.clear()
         self.lineEdit_5.clear()
         self.lineEdit_6.clear()
+
+    def open_excel(self):
+        if self.excel_actual != "":
+            cmd = "start %s" % self.excel_actual
+            os.system(cmd)
+            return
+        self.alert("没有指定Excel文件")
 
     def compareExecute(self, excel_expect, excel_actual):
         wb_expect = load_workbook(excel_expect, data_only=False)

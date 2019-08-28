@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'bijiao.ui'
+# Form implementation generated from reading ui file 'form.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -83,8 +83,11 @@ class Ui_Form(object):
         self.label_3.setGeometry(QtCore.QRect(10, 10, 24, 16))
         self.label_3.setObjectName("label_3")
         self.pushButton_4 = QtWidgets.QPushButton(Form)
-        self.pushButton_4.setGeometry(QtCore.QRect(280, 250, 75, 23))
+        self.pushButton_4.setGeometry(QtCore.QRect(270, 160, 75, 23))
         self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_5 = QtWidgets.QPushButton(Form)
+        self.pushButton_5.setGeometry(QtCore.QRect(270, 120, 75, 23))
+        self.pushButton_5.setObjectName("pushButton_5")
 
         self.retranslateUi(Form)
         self.comboBox.activated['int'].connect(Form.select_method)
@@ -92,6 +95,7 @@ class Ui_Form(object):
         self.pushButton_2.clicked.connect(Form.select_actual)
         self.pushButton_3.clicked.connect(Form.execute_compare)
         self.pushButton_4.clicked.connect(Form.select_clear)
+        self.pushButton_5.clicked.connect(Form.open_excel)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -110,3 +114,4 @@ class Ui_Form(object):
         self.label_4.setText(_translate("Form", "列："))
         self.label_3.setText(_translate("Form", "行："))
         self.pushButton_4.setText(_translate("Form", "清除缓存"))
+        self.pushButton_5.setText(_translate("Form", "打开Excel"))
